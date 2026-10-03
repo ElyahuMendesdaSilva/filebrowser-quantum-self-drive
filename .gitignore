@@ -1,0 +1,14 @@
+# Dependências e builds
+node_modules/
+frontend-react/build/
+frontend/dist/
+
+# Banco de dados local do backend (usuários, hashes de senha, avatares, shares)
+backend/filebrowser.sqlite
+backend/filebrowser.sqlite-shm
+backend/filebrowser.sqlite-wal
+
+# Temporários e segredos
+backend/tmp/
+.env
+.env.*

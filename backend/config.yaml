@@ -1,0 +1,38 @@
+http:
+  port: 8080
+  baseURL: "/"
+  # externalUrl: "http://localhost:8080"   # opcional: usado nos links de compartilhamento
+
+server:
+  logging:
+    - levels: "info|error|warning|debug"
+      apiFilter: 'disabled'
+  sources:
+    - path: "/home/elyahumendes/Área de trabalho/Projetos/filebrowser/TEste/"
+      config:
+        defaultEnabled: true
+        defaultUserScope: "/"
+        private: false
+        defaultPermissions:
+          view: true
+          download: true
+          modify: true
+          create: true
+          delete: true
+
+auth:
+  methods:
+    password:
+      enabled: true
+      minLength: 5
+      signup: false
+    passkey:
+      enabled: false
+
+userDefaults:
+  account:
+    permissions:
+      api: false
+      admin: false
+      share: true
+      realtime: false

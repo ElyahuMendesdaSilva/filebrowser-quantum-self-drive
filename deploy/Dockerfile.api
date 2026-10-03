@@ -1,0 +1,28 @@
+# API (File Browser Quantum customizado) — build em Go puro, sem CGO e sem o front Vue.
+FROM golang:alpine AS build
+ARG VERSION=docker
+ARG REVISION=local
+WORKDIR /app
+COPY backend/ ./
+RUN go mod download
+RUN CGO_ENABLED=0 go build -tags analytics -ldflags="-w -s \
+  -X 'github.com/gtsteffaniak/filebrowser/backend/internal/version.Version=${VERSION}' \
+  -X 'github.com/gtsteffaniak/filebrowser/backend/internal/version.CommitSHA=${REVISION}'" \
+  -o filebrowser .
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates mailcap tzdata curl
+RUN adduser -D -s /bin/true -u 1000 filebrowser \
+ && mkdir -p /home/filebrowser/data /srv \
+ && chown -R filebrowser:filebrowser /home/filebrowser /srv
+USER filebrowser
+WORKDIR /home/filebrowser
+ENV FILEBROWSER_CONFIG="/home/filebrowser/config.yaml" \
+    FILEBROWSER_DATABASE_PATH="/home/filebrowser/data/database.sqlite"
+COPY --from=build --chown=filebrowser:filebrowser /app/filebrowser ./filebrowser
+COPY --from=build --chown=filebrowser:filebrowser /app/reduce-rounded-corners.css ./
+COPY --chown=filebrowser:filebrowser deploy/config.template.yaml ./config.template.yaml
+COPY --chown=filebrowser:filebrowser deploy/entrypoint.sh ./entrypoint.sh
+RUN sed "s|__ADMIN_USER__|admin|" config.template.yaml > config.yaml && ./filebrowser version
+EXPOSE 8080
+ENTRYPOINT ["/bin/sh", "/home/filebrowser/entrypoint.sh"]

@@ -1,0 +1,35 @@
+name: self-drive
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.api
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-UTC}
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      FILEBROWSER_ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Defina ADMIN_PASSWORD no arquivo .env (copie .env.example para .env)}
+    volumes:
+      - api-data:/home/filebrowser/data   # banco SQLite (usuários, shares, avatares)
+      - ${FILES_DIR:-./files}:/srv        # seus arquivos
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 15s
+      retries: 3
+
+  web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-3000}:80"
+
+volumes:
+  api-data:

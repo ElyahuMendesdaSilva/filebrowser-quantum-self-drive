@@ -1,0 +1,446 @@
+.header {
+  position: relative;
+  z-index: 30;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 20px 0 28px;
+  border-bottom: 1px solid #303030;
+  background: #1f1f1f;
+}
+.brand {
+  width: 205px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 22px;
+  letter-spacing: -0.4px;
+  white-space: nowrap;
+}
+.brand img {
+  height: 39px;
+  width: 39px;
+  object-fit: contain;
+}
+.search-container {
+  position: relative;
+  z-index: 31;
+  max-width: 834px;
+  min-width: 0;
+  flex: 1;
+}
+.search-box {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 17px;
+  color: #c4c7c5;
+  background: #303030;
+  border-radius: 24px;
+}
+.search-box input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: #e3e3e3;
+  font-size: 16px;
+}
+.search-box input::placeholder {
+  color: #c4c7c5;
+  opacity: 1;
+}
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-actions button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: #c4c7c5;
+}
+.header-actions button:hover {
+  background: #303030;
+}
+.header-actions .profile {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #a16636, #e8bf82);
+  color: white;
+  font-weight: 600;
+}
+@media (max-width: 650px) {
+  .header {
+    padding: 0 12px;
+    gap: 12px;
+  }
+  .brand {
+    width: auto;
+  }
+  .brand span,
+  .header-actions button:not(.profile) {
+    display: none;
+  }
+  .search-box {
+    min-width: 0;
+  }
+}
+.account-anchor {
+  position: relative;
+}
+.header-actions .profile {
+  overflow: hidden;
+  border: 2px solid #a8c7fa;
+  font-size: 15px;
+}
+.header-actions .profile:hover {
+  background: linear-gradient(135deg, #a16636, #e8bf82);
+}
+.header-actions .profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile{
+    padding: 0;
+}
+.account-popover {
+  position: absolute;
+  z-index: 20;
+  top: 48px;
+  right: -8px;
+  width: 360px;
+  max-width: calc(100vw - 24px);
+  padding: 18px;
+  background: #2a2b2e;
+  border-radius: 28px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+  color: #e8eaed;
+}
+.account-card {
+  padding: 20px 20px 0;
+  text-align: center;
+  background: #33363a;
+  border-radius: 24px;
+}
+.account-avatar-wrap {
+  position: relative;
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 14px;
+}
+.account-avatar {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 2px solid #b23a3a;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #8a8a8a 60%, #222);
+}
+.account-avatar {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+}
+.account-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.header-actions .account-edit {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid #33363a;
+  border-radius: 50%;
+  background: #7fb0f5;
+  color: #12233d;
+}
+.header-actions .account-edit:hover {
+  background: #7fb0f5;
+}
+.account-edit svg {
+  width: 13px;
+  height: 13px;
+}
+.account-file-input {
+  display: none;
+}
+.account-remove-avatar {
+  margin: -8px 0 14px;
+  border: 0;
+  background: transparent;
+  color: #a8c7fa;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.account-remove-avatar:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.account-avatar-error {
+  margin: 0 0 12px;
+  color: #ffb4ab;
+  font-size: 12px;
+}
+.account-name {
+  margin: 0 0 6px;
+  color: #a8c7fa;
+  font-size: 19px;
+  font-weight: 500;
+}
+.account-email {
+  margin: 0 0 16px;
+  color: #d3d6da;
+  font-size: 15px;
+}
+.header-actions .account-option,
+.header-actions .account-logout {
+  width: 100%;
+  height: 38px;
+  margin: 0 0 8px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 19px;
+  background: #4a4d52;
+  color: #e8eaed;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.header-actions .account-option:hover {
+  filter: brightness(1.12);
+  background: #4a4d52;
+}
+.account-option svg {
+  width: 18px;
+  height: 18px;
+}
+.header-actions .account-option-alt {
+  background: #5b6674;
+}
+.header-actions .account-option-alt:hover {
+  background: #5b6674;
+  filter: brightness(1.12);
+}
+.account-divider {
+  height: 3px;
+  margin: 14px -20px 0;
+  background: #2a2b2e;
+}
+.header-actions .account-logout {
+  width: calc(100% + 40px);
+  height: 52px;
+  margin: 0 -20px;
+  padding: 0;
+  border-radius: 0 0 24px 24px;
+  background: transparent;
+  font-size: 17px;
+}
+.header-actions .account-logout:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.account-logout svg {
+  width: 20px;
+  height: 20px;
+}
+.account-footer {
+  padding: 14px 0 6px;
+  text-align: center;
+  color: #9aa0a6;
+  font-size: 12px;
+}
+.account-popover button:focus-visible {
+  outline: 2px solid #a8c7fa;
+  outline-offset: 2px;
+}
+@media (max-width: 420px) {
+  .account-popover {
+    right: -8px;
+    width: calc(100vw - 24px);
+    padding: 14px;
+  }
+  .account-card {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+@media (max-width: 650px) {
+  .account-anchor .account-edit {
+    display: grid;
+  }
+  .account-anchor .account-option,
+  .account-anchor .account-logout {
+    display: flex;
+  }
+}
+.notification-anchor {
+  position: relative;
+}
+.notification-indicator {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #1f1f1f;
+  border-radius: 50%;
+  background: #8ab4f8;
+}
+.notification-indicator.is-complete {
+  background: #34a853;
+}
+@media (max-width: 650px) {
+  .header-actions .notification-anchor > button {
+    display: grid;
+  }
+}
+.search-container.has-suggestions .search-box {
+  border-radius: 24px 24px 0 0;
+}
+.search-box .search-clear {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #c4c7c5;
+  cursor: pointer;
+}
+.search-box .search-clear:hover {
+  background: #45464a;
+}
+.search-box .search-clear svg {
+  width: 20px;
+  height: 20px;
+}
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  padding: 8px 0 0;
+  border-radius: 0 0 20px 20px;
+  background: #303134;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color: #e8eaed;
+}
+.search-query-suggestion,
+.search-result-suggestion {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.search-query-suggestion:hover,
+.search-result-suggestion:hover {
+  background: #3c4043;
+}
+.search-query-suggestion svg,
+.search-result-suggestion > svg {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  color: #a8c7fa;
+}
+.search-query-suggestion span {
+  font-weight: 500;
+}
+.search-result-name {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-result-suggestion small {
+  max-width: 38%;
+  overflow: hidden;
+  color: #bdc1c6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-message {
+  padding: 14px 22px;
+  color: #bdc1c6;
+  font-size: 14px;
+}
+.search-message.search-error {
+  color: #f28b82;
+}
+.search-suggestion-footer {
+  margin-top: 6px;
+  padding: 8px 14px;
+  border-top: 1px solid #45464a;
+}
+.search-suggestion-footer button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  color: #a8c7fa;
+  text-align: left;
+  cursor: pointer;
+}
+.search-suggestion-footer button:hover {
+  background: #3c4043;
+}
+@media (max-width: 650px) {
+  .search-container {
+    flex: 1;
+  }
+  .search-result-suggestion {
+    gap: 9px;
+    padding-inline: 12px;
+  }
+  .search-result-suggestion small {
+    max-width: 32%;
+  }
+}
