@@ -1,7 +1,9 @@
 # Dependências e builds
 node_modules/
-frontend-react/build/
 frontend/dist/
+backend/internal/web/dist/
+backend/internal/web/embed/*
+!backend/internal/web/embed/.gitignore
 
 # Banco de dados local do backend (usuários, hashes de senha, avatares, shares)
 backend/filebrowser.sqlite

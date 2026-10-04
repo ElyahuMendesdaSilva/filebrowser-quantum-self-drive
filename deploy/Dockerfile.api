@@ -1,9 +1,19 @@
-# API (File Browser Quantum customizado) — build em Go puro, sem CGO e sem o front Vue.
+# Self Drive: interface Vue (Quantum) compilada e embutida na API (File Browser Quantum customizado).
+# Build em Go puro, sem CGO.
+FROM node:22-alpine AS webbuild
+WORKDIR /app/frontend
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY frontend/ ./
+# O vite grava em ../backend/internal/web/dist
+RUN npm run build:docker
+
 FROM golang:alpine AS build
 ARG VERSION=docker
 ARG REVISION=local
 WORKDIR /app
 COPY backend/ ./
+COPY --from=webbuild /app/backend/internal/web/dist/ ./internal/web/embed/
 RUN go mod download
 RUN CGO_ENABLED=0 go build -tags analytics -ldflags="-w -s \
   -X 'github.com/gtsteffaniak/filebrowser/backend/internal/version.Version=${VERSION}' \
