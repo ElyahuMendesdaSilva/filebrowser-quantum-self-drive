@@ -47,12 +47,31 @@ make build
 
 ## Executar com Docker Compose
 
-Crie uma pasta de arquivos e defina uma senha para o administrador:
+Na raiz do repositório, crie a pasta que será compartilhada e um arquivo `.env`:
 
 ```bash
 mkdir -p files
-export ADMIN_PASSWORD='defina-uma-senha-forte'
-docker compose up --build
+cat > .env <<'EOF'
+ADMIN_USER=admin
+ADMIN_PASSWORD=troque-por-uma-senha-forte
+FILES_DIR=./files
+WEB_PORT=3000
+TZ=America/Fortaleza
+EOF
+chmod 600 .env
+```
+
+Edite `ADMIN_PASSWORD` e escolha uma senha forte antes de iniciar os containers. O arquivo `.env` é ignorado pelo Git; não o publique. Suba o serviço com:
+
+```bash
+docker compose up --build -d
+```
+
+Confira se iniciou e veja os logs:
+
+```bash
+docker compose ps
+docker compose logs -f api
 ```
 
 Abra [http://localhost:3000](http://localhost:3000). O Compose mapeia a porta local `3000` para a porta `8080` do container e monta `./files` como origem de arquivos.
@@ -61,7 +80,7 @@ Variáveis disponíveis em `docker-compose.yml`:
 
 | Variável | Padrão | Uso |
 | --- | --- | --- |
-| `ADMIN_PASSWORD` | obrigatória | Senha inicial do administrador. |
+| `ADMIN_PASSWORD` | obrigatória | Senha do administrador aplicada pelo container na inicialização. Mantenha o valor do `.env` para não perder acesso após reiniciar. |
 | `ADMIN_USER` | `admin` | Nome do usuário administrador. |
 | `FILES_DIR` | `./files` | Pasta local de arquivos montada em `/srv` no container. |
 | `WEB_PORT` | `3000` | Porta publicada na máquina host. |
@@ -73,7 +92,33 @@ Para parar o serviço e manter os dados:
 docker compose down
 ```
 
-O banco de dados fica no volume `api-data`. Remover esse volume apaga os dados persistidos; faça backup antes de qualquer remoção.
+O banco de dados fica no volume `api-data`. **Não use `docker compose down -v`** se quiser manter contas, avatares e compartilhamentos: essa opção remove o volume e apaga os dados persistidos.
+
+### Adicionar usuários pelo terminal
+
+Com o container `api` em execução, crie um usuário comum. O comando solicitará a senha sem exibi-la no terminal:
+
+```bash
+docker compose exec api ./filebrowser user set alice --password
+```
+
+Para criar um administrador, acrescente `--admin`:
+
+```bash
+docker compose exec api ./filebrowser user set bob --password --admin
+```
+
+Para promover a administrador uma conta existente que usa login por senha:
+
+```bash
+docker compose exec api ./filebrowser user promote alice
+```
+
+`user set` também atualiza a senha de uma conta existente. O argumento `--admin` concede permissão administrativa; sem ele, o comando não remove uma permissão administrativa que a conta já tenha. Para consultar as opções disponíveis:
+
+```bash
+docker compose exec api ./filebrowser user --help
+```
 
 ## Estrutura do repositório
 
