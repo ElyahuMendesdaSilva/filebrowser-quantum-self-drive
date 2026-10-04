@@ -1,137 +1,89 @@
-<div align="center">
+# File Browser Quantum — Self Drive
 
-  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0b548794f2ac4871a0cf7aa9ecab049f)](https://app.codacy.com/gh/gtsteffaniak/filebrowser/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-  [![latest version](https://img.shields.io/github/v/release/gtsteffaniak/filebrowser)](https://github.com/gtsteffaniak/filebrowser/releases)
-  [![DockerHub Pulls](https://img.shields.io/docker/pulls/gtstef/filebrowser?label=latest%20Docker%20pulls)](https://hub.docker.com/r/gtstef/filebrowser)
-  [![Apache-2.0 License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+Versão personalizada do [File Browser Quantum](https://github.com/gtsteffaniak/filebrowser), preparada para funcionar como servidor do aplicativo [Self Drive](https://github.com/ElyahuMendesdaSilva/self-drive).
 
-  [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://github.com/gtsteffaniak/filebrowser/wiki/Q&A#is-there-a-way-to-donate-or-support-this-project)
+Este repositório mantém o backend em Go e a interface web em Vue do projeto-base. A interface é compilada e incorporada ao executável da API, que serve ambos na mesma porta.
 
-  <img width="150" alt="FileBrowser Quantum logo" src="https://github.com/user-attachments/assets/c40b22c9-33da-47b7-bc4c-ce69bb5cc174">
-  <h3>FileBrowser Quantum</h3>
-  The best free self-hosted web-based file manager.
-  <br/><br/>
-  <img width="800" alt="FileBrowser Quantum file listing in dark mode" src="https://filebrowserquantum.com/images/generated/listing/view-mode-normal-dark.jpg">
-</div>
+## Alterações para o Self Drive
 
-## Pinned
+- **Avatares de usuário:** consulta e atualização de fotos de perfil, com validação e armazenamento no banco de dados.
+- **Links de compartilhamento restritos:** permite limitar um link a usuários autenticados selecionados; administradores e a pessoa proprietária do compartilhamento mantêm acesso.
+- **Busca de usuários para compartilhamento:** fornece os dados necessários para selecionar destinatários.
 
-:pushpin: [Read The Official Docs](https://filebrowserquantum.com/) (currently english-only)
+Detalhes de rotas, permissões, formatos e exemplos estão em [`backend/docs/avatar-e-share-restrito.md`](backend/docs/avatar-e-share-restrito.md). A documentação completa da API também fica disponível em `/swagger` para usuários com permissão de API.
 
-:pushpin: [v2.0.0 is now in beta!](https://filebrowserquantum.com/en/docs/getting-started/v2/about/)
+## Requisitos
 
-## About
+- Go conforme a versão declarada em [`backend/go.mod`](backend/go.mod).
+- Node.js e npm compatíveis com [`frontend/package.json`](frontend/package.json).
+- Para execução com Docker: Docker e o plugin Docker Compose.
 
-FileBrowser Quantum provides an easy way to access and manage your files from the web. It has a modern responsive interface that has many advanced features to manage users, access, sharing, and file preview and editing.
+## Executar localmente
 
-This version is called "Quantum" because it packs tons of advanced features into a tiny and easy-to-run file. Unlike the majority of alternative options, FileBrowser Quantum is simple to install and easy to configure.
+Na raiz do repositório:
 
-The goal for this repo is to become the best open-source self-hosted file browsing application that exists -- **all for free**. This repo will always be free and open-source.
+```bash
+./start.sh
+```
 
-Ready to try it out? See [Getting Started Docs](https://filebrowserquantum.com/en/docs/getting-started/).
+Na primeira execução, o script instala as dependências do frontend, compila a interface e inicia o backend. Abra [http://localhost:8080](http://localhost:8080).
 
-## How its different
+Para desenvolver a interface com Vite e hot reload:
 
-FileBrowser Quantum is a massive fork of the file browser open-source project with the following changes:
+```bash
+./start.sh dev
+```
 
-  1. ✅ Better source configuration - multiple sources, include/exclude rules, and [more](https://filebrowserquantum.com/en/docs/configuration/sources/)
-  2. ✅ Login support for OIDC, LDAP, JWT, password + 2FA, and proxy.
-  3. ✅ Beautiful, Responsive, and Customizable user interface.
-  4. ✅ Streamlined configuration via `config.yaml` config file.
-  5. ✅ Efficient search
-     - Real-time search results as you type.
-     - Real-time monitoring and updates in the UI.
-     - Search supports file and folder sizes, along with various filters.
-  6. ✅ Better listing browsing
-     - Thumbnails support includes **office**, **video**, and **album artwork**, and **3D models**.
-     - Faster and more responsive views with animations.
-     - **Folder sizes** are displayed and support thumbnails
-     - Navigating remembers the last scroll position.
-     - WebDAV support
-     - Granular permissions
-  7. ✅ Highly configurable and [customizable sharing options](https://filebrowserquantum.com/en/docs/shares/options/)
-     - share expiration time
-     - users who can access share (including anonymous)
-     - styling and themes
-     - file viewing, editing, and uploading permissions
-  8. ✅ Access control that can be scoped to user or group and source path.
-  9. ✅ Developer API support
-     - Ability to create long-lived API Tokens.
-     - A helpful Swagger page is available at `/swagger` endpoint for API enabled users.
+O script usa `backend/config.yaml`. Revise a configuração antes de iniciar e ajuste a origem de arquivos (`server.sources`) para uma pasta apropriada no seu ambiente. A configuração incluída aponta para `../files`, relativa à pasta `backend`.
 
-Notable features that this fork *does not* have (removed):
- - ❌ shell commands are completely removed and will not be returned.
+Também é possível preparar e compilar as partes separadamente:
 
-FileBrowser Quantum differs significantly from the original version. Many of these changes required a significant overhaul. Creating a fork was a necessary process to make the program better. There have been many growing pains, but a stable release is planned and coming soon.
+```bash
+make setup
+make build
+```
 
-## The UI
+`make setup` instala dependências de desenvolvimento. `make build` compila o frontend e o backend.
 
-The UI has a simple three-component navigation system:
+## Executar com Docker Compose
 
-  1. (Left) Multi-action button with slide-out panel.
-  2. (Middle) The powerful search bar / title
-  3. (Right) The view change toggle / overflow menu
+Crie uma pasta de arquivos e defina uma senha para o administrador:
 
-All other functions are moved either into the action menu or pop-up menus.
-If the action does not depend on context, it will exist in the slide-out
-action panel. If the action is available based on context, it will show up as
-a pop-up menu.
+```bash
+mkdir -p files
+export ADMIN_PASSWORD='defina-uma-senha-forte'
+docker compose up --build
+```
 
-<img width="1200" height="750" alt="Aug-07-2026 14-54-55" src="https://github.com/user-attachments/assets/fd1c1747-f30f-4e21-b991-f45744416d7e" />
+Abra [http://localhost:3000](http://localhost:3000). O Compose mapeia a porta local `3000` para a porta `8080` do container e monta `./files` como origem de arquivos.
 
-## Official Docs
+Variáveis disponíveis em `docker-compose.yml`:
 
-See the [Official Docs](https://filebrowserquantum.com/). Contributions are welcome and encouraged! See [FilebrowserDocs Github](https://github.com/quantumx-apps/filebrowserDocs).
+| Variável | Padrão | Uso |
+| --- | --- | --- |
+| `ADMIN_PASSWORD` | obrigatória | Senha inicial do administrador. |
+| `ADMIN_USER` | `admin` | Nome do usuário administrador. |
+| `FILES_DIR` | `./files` | Pasta local de arquivos montada em `/srv` no container. |
+| `WEB_PORT` | `3000` | Porta publicada na máquina host. |
+| `TZ` | `UTC` | Fuso horário do container. |
 
-## Comparison Chart
-Application Name | <img width="48" alt="" src="https://github.com/user-attachments/assets/c40b22c9-33da-47b7-bc4c-ce69bb5cc174" > Quantum | <img width="48" alt="" src="https://github.com/filebrowser/filebrowser/blob/master/frontend/public/img/logo.svg" > Filebrowser | <img width="48" alt="" src="https://github.com/mickael-kerjean/filestash/blob/master/public/assets/logo/app_icon.png?raw=true" > Filestash | <img width="48" alt="" src="https://avatars.githubusercontent.com/u/19211038?s=200&v=4" >  Nextcloud | <img width="48" alt="" src="https://cdn.iconscout.com/icon/free/png-256/free-google-drive-logo-icon-svg-download-png-2476481.png" > Google_Drive | <img width="48" alt="" src="https://avatars.githubusercontent.com/u/6422152?v=4" > FileRun
---- | --- | --- | --- | --- | --- | --- |
-Filesystem support            | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-Linux                         | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-Windows                       | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-Mac                           | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-Self hostable                 | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-Has Stable Release?           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-S3 support                    | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
-webdav support                | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
-FTP support                   | ❌ | ❌ | ✅ | ✅ | ❌ | ✅ |
-Dedicated docs site?          | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-Multiple sources at once      | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
-Docker image size             | 180 MB (with ffmpeg) | 31 MB  | 240 MB (main image) | 250 MB | ❌ | > 2 GB |
-Min. Memory Requirements      | 512 MB | 128 MB | 128 MB (main image) | 512 MB | ❌ | 512 MB   |
-has standalone binary         | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
-price                         | free | free | free | free tier | free tier | $99+ |
-rich media preview            | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-Upload files from the web?    | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-Advanced Search?              | ✅ | ❌ | ✅ | configurable | ✅ | ✅ |
-Indexed Search?               | ✅ | ❌ | ✅ | configurable | ✅ | ✅ |
-Content-aware search?         | ❌ | ❌ | ✅ | configurable | ✅ | ✅ |
-Custom job support            | :construction: | ✅ | ✅ | ✅ | ❌ | ✅ |
-Multiple users                | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-Single sign-on support        | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
-LDAP sign-on support          | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
-Long-live API key support     | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
-API documentation page        | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
-Mobile App                    | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
-open source?                  | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
-tags support                  | :construction: | ❌ | ✅ | ✅ | ❌ | ✅ |
-shareable web links?          | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-Event-based notifications     | :construction: | ❌ | ✅ | ❌ | ❌ | ✅ |
-Metrics                       | :construction: | ❌ | ✅ | ❌ | ❌ | ❌ |
-file space quotas             | :construction: | ❌ | ✅ | ❌ | ✅ | ✅ |
-text-based files editor       | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-Office file support           | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
-Office file previews          | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
-Themes                        | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-Branding support              | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-activity log                  | ✅ | ❌ | ✅ | ✅ | ✅ | ✅
-Comments support              | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
-trash support                 | :construction: | ❌ | ✅ | ✅ | ✅ | ✅ |
-Starred/pinned files          | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ |
-Chromecast support            | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
-Share collections of files    | :construction: | ❌ | ❌ | ❌ | ❌ | ✅ |
-Can archive selected files    | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
-Can browse archive files      | :construction: | ❌ | ✅ | ❌ | ❌ | ✅ |
-Can convert documents         | :construction: | ❌ | ✅ | ❌ | ❌ | ✅ |
-Can convert videos            | :construction: | ❌ | ✅ | ❌ | ❌ | ❌ |
-Can convert photos            | :construction: | ❌ | ✅ | ❌ | ❌ | ❌ |
+Para parar o serviço e manter os dados:
+
+```bash
+docker compose down
+```
+
+O banco de dados fica no volume `api-data`. Remover esse volume apaga os dados persistidos; faça backup antes de qualquer remoção.
+
+## Estrutura do repositório
+
+- `backend/`: servidor HTTP e API em Go.
+- `frontend/`: interface web Vue.
+- `deploy/`: Dockerfile e configurações de container.
+- `_docker/`: ambientes de integração e testes do projeto-base.
+- `docker-compose.yml`: execução local com Docker Compose.
+- `start.sh` e `start.bat`: scripts de inicialização local.
+
+## Projeto-base e licença
+
+Este projeto é derivado do [File Browser Quantum](https://github.com/gtsteffaniak/filebrowser). Consulte [`LICENSE`](LICENSE) para a licença Apache-2.0 e mantenha os avisos de copyright e atribuição exigidos ao redistribuir o código.
